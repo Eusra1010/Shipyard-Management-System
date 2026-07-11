@@ -32,14 +32,40 @@
 .cs-icon{
     position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
     font-size:clamp(80px,18vw,160px);color:rgba(255,255,255,.055);
-    pointer-events:none;z-index:0;
+    pointer-events:none;z-index:2;
+}
+
+/* ── Dark overlay for real photos (also softens gradient slides) ── */
+.cs-overlay{
+    position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(5,12,25,.82) 0%,rgba(5,12,25,.3) 50%,rgba(5,12,25,.12) 100%);
+    z-index:1;pointer-events:none;
 }
 
 /* ── Bottom gradient fade (keeps dots legible) ── */
 .cs-fade{
     position:absolute;bottom:0;left:0;right:0;height:110px;
     background:linear-gradient(to top,rgba(9,17,31,.9) 0%,transparent 100%);
-    z-index:1;pointer-events:none;
+    z-index:2;pointer-events:none;
+}
+
+/* ── Slide title & subtitle ── */
+.cs-title{
+    position:absolute;bottom:62px;left:40px;right:130px;z-index:3;
+    opacity:0;transform:translateY(16px);
+    transition:opacity .6s ease .08s,transform .6s ease .08s;
+    pointer-events:none;
+}
+.cs-title.active{opacity:1;transform:translateY(0);}
+.cs-title-h{
+    font-size:clamp(18px,3.2vw,34px);font-weight:800;color:#f1f5f9;
+    line-height:1.22;margin-bottom:7px;
+    text-shadow:0 2px 14px rgba(0,0,0,.75);
+}
+.cs-title-sub{
+    font-size:clamp(11px,1.4vw,13px);color:#b0bfd4;
+    letter-spacing:.04em;line-height:1.5;
+    text-shadow:0 1px 8px rgba(0,0,0,.9);
 }
 
 /* ── Badge ── */
@@ -89,6 +115,7 @@
     .cs-arrow{width:36px;height:36px;font-size:12px;}
     .cs-prev{left:10px;} .cs-next{right:10px;}
     .cs-badge{font-size:9px;padding:4px 10px;}
+    .cs-title{bottom:44px;left:14px;right:14px;}
 }
 @media(prefers-reduced-motion:reduce){
     .cs-track{transition:none;}
@@ -101,38 +128,63 @@
     {{-- ── Track ── --}}
     <div class="cs-track" id="csTrack">
 
-        {{-- Slide 1 · YARD VIEW  (steel-blue dawn) --}}
-        <div class="cs-slide" style="background:radial-gradient(ellipse at 30% 45%,rgba(59,130,246,.22) 0%,transparent 58%),linear-gradient(160deg,#060d1a 0%,#0f2952 42%,#1a3d70 68%,#060d1a 100%);">
+        {{-- Slide 1 · YARD VIEW — save your image as public/images/gallery/yard.jpg --}}
+        <div class="cs-slide" style="background:radial-gradient(ellipse at 30% 45%,rgba(59,130,246,.22) 0%,transparent 58%),linear-gradient(160deg,#060d1a 0%,#0f2952 42%,#1a3d70 68%,#060d1a 100%);background-image:url('/images/gallery/yard.jpg');background-size:cover;background-position:center;">
             <div class="cs-icon"><i class="fas fa-ship"></i></div>
+            <div class="cs-overlay"></div>
             <span class="cs-badge">Yard View</span>
+            <div class="cs-title active">
+                <div class="cs-title-h">NavalForge Shipyard</div>
+                <div class="cs-title-sub">Chittagong Port, Bangladesh &nbsp;·&nbsp; Est. 1998</div>
+            </div>
             <div class="cs-fade"></div>
         </div>
 
-        {{-- Slide 2 · DRY DOCK  (industrial teal) --}}
-        <div class="cs-slide" style="background:radial-gradient(ellipse at 68% 35%,rgba(20,184,166,.18) 0%,transparent 55%),linear-gradient(155deg,#021918 0%,#0a3d38 44%,#0f5a50 70%,#021918 100%);">
+        {{-- Slide 2 · DRY DOCK — save your image as public/images/gallery/drydock.jpg --}}
+        <div class="cs-slide" style="background:radial-gradient(ellipse at 68% 35%,rgba(20,184,166,.18) 0%,transparent 55%),linear-gradient(155deg,#021918 0%,#0a3d38 44%,#0f5a50 70%,#021918 100%);background-image:url('/images/gallery/drydock.jpg');background-size:cover;background-position:center;">
             <div class="cs-icon"><i class="fas fa-anchor"></i></div>
+            <div class="cs-overlay"></div>
             <span class="cs-badge">Dry Dock</span>
+            <div class="cs-title">
+                <div class="cs-title-h">Main Dry Dock Facility</div>
+                <div class="cs-title-sub">Full structural overhaul capability</div>
+            </div>
             <div class="cs-fade"></div>
         </div>
 
-        {{-- Slide 3 · ENGINE ROOM  (forge amber) --}}
-        <div class="cs-slide" style="background:radial-gradient(ellipse at 50% 62%,rgba(251,146,60,.22) 0%,transparent 52%),linear-gradient(170deg,#130400 0%,#5c1800 42%,#7c2d12 66%,#130400 100%);">
+        {{-- Slide 3 · ENGINE ROOM — save your image as public/images/gallery/engine.jpg --}}
+        <div class="cs-slide" style="background:radial-gradient(ellipse at 50% 62%,rgba(251,146,60,.22) 0%,transparent 52%),linear-gradient(170deg,#130400 0%,#5c1800 42%,#7c2d12 66%,#130400 100%);background-image:url('/images/gallery/engine.jpg');background-size:cover;background-position:center;">
             <div class="cs-icon"><i class="fas fa-cogs"></i></div>
+            <div class="cs-overlay"></div>
             <span class="cs-badge">Engine Room</span>
+            <div class="cs-title">
+                <div class="cs-title-h">Engine Overhaul Workshop</div>
+                <div class="cs-title-sub">Precision mechanical engineering since 1998</div>
+            </div>
             <div class="cs-fade"></div>
         </div>
 
-        {{-- Slide 4 · WELDING UNIT  (arc-flash violet) --}}
-        <div class="cs-slide" style="background:radial-gradient(ellipse at 62% 42%,rgba(167,139,250,.2) 0%,transparent 52%),linear-gradient(155deg,#07000f 0%,#1e0a4a 42%,#3b0e8d 68%,#07000f 100%);">
+        {{-- Slide 4 · WELDING UNIT — save your image as public/images/gallery/welding.jpg --}}
+        <div class="cs-slide" style="background:radial-gradient(ellipse at 62% 42%,rgba(167,139,250,.2) 0%,transparent 52%),linear-gradient(155deg,#07000f 0%,#1e0a4a 42%,#3b0e8d 68%,#07000f 100%);background-image:url('/images/gallery/welding.jpg');background-size:cover;background-position:center;">
             <div class="cs-icon"><i class="fas fa-fire"></i></div>
+            <div class="cs-overlay"></div>
             <span class="cs-badge">Welding Unit</span>
+            <div class="cs-title">
+                <div class="cs-title-h">Precision Welding Unit</div>
+                <div class="cs-title-sub">Certified structural &amp; arc welding</div>
+            </div>
             <div class="cs-fade"></div>
         </div>
 
-        {{-- Slide 5 · HULL WORKS  (cold steel) --}}
-        <div class="cs-slide" style="background:radial-gradient(ellipse at 38% 50%,rgba(148,163,184,.12) 0%,transparent 52%),linear-gradient(155deg,#090f18 0%,#1a2744 42%,#273d5a 68%,#090f18 100%);">
+        {{-- Slide 5 · HULL WORKS — save your image as public/images/gallery/hull.jpg --}}
+        <div class="cs-slide" style="background:radial-gradient(ellipse at 38% 50%,rgba(148,163,184,.12) 0%,transparent 52%),linear-gradient(155deg,#090f18 0%,#1a2744 42%,#273d5a 68%,#090f18 100%);background-image:url('/images/gallery/hull.jpg');background-size:cover;background-position:center;">
             <div class="cs-icon"><i class="fas fa-paint-roller"></i></div>
+            <div class="cs-overlay"></div>
             <span class="cs-badge">Hull Works</span>
+            <div class="cs-title">
+                <div class="cs-title-h">Hull Restoration Bay</div>
+                <div class="cs-title-sub">Painting, blasting &amp; anti-corrosion treatment</div>
+            </div>
             <div class="cs-fade"></div>
         </div>
 
@@ -202,6 +254,11 @@
         dots.forEach(function (d, i) {
             d.classList.toggle('active', i === current);
         });
+        var titles = document.querySelectorAll('.cs-title');
+        titles.forEach(function (t) { t.classList.remove('active'); });
+        if (titles[current]) {
+            setTimeout(function () { titles[current].classList.add('active'); }, 120);
+        }
     }
 
     function startAuto() {
