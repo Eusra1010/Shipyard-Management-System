@@ -9,16 +9,14 @@ class ShipController extends Controller
 {
     public function index()
     {
+        // get_active_jobs() is an Oracle function defined in database/sql/plsql_objects.sql
         $ships = DB::select("
             SELECT s.ship_id, s.ship_name, s.ship_type, s.owner_name,
                    s.tonnage, s.flag_country, s.status, s.arrival_date,
                    b.berth_name,
-                   COUNT(w.order_id) AS active_jobs
+                   get_active_jobs(s.ship_id) AS active_jobs
             FROM ships s
             LEFT JOIN berths b ON b.ship_id = s.ship_id
-            LEFT JOIN work_orders w ON w.ship_id = s.ship_id AND w.status != 'done'
-            GROUP BY s.ship_id, s.ship_name, s.ship_type, s.owner_name,
-                     s.tonnage, s.flag_country, s.status, s.arrival_date, b.berth_name
             ORDER BY s.arrival_date DESC
         ");
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ShipController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\WorkOrderController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
@@ -16,6 +17,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ships', [ShipController::class, 'index'])->name('ships.index');
     Route::get('/ships/create', [ShipController::class, 'create'])->name('ships.create');
     Route::post('/ships', [ShipController::class, 'store'])->name('ships.store');
+
+    Route::get('/work-orders/create', [WorkOrderController::class, 'create'])->name('work-orders.create');
+    Route::post('/work-orders', [WorkOrderController::class, 'store'])->name('work-orders.store');
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
