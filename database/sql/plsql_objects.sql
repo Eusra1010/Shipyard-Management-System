@@ -1,7 +1,6 @@
 -- ============================================================
 -- NavalForge PL/SQL Objects
 -- Run this in SQL*Plus as the navalforge user.
--- Covers all 7 PL/SQL topics required for the university project.
 -- ============================================================
 
 -- Topic 1 & 2: Introduction to PL/SQL + Block Structure
@@ -25,8 +24,8 @@ IS
 BEGIN
     SELECT COUNT(*) INTO v_count
     FROM work_orders
-    WHERE ship_id = p_ship_id    -- = comparison operator
-      AND status  != 'done';     -- != not-equal comparison operator
+    WHERE ship_id = p_ship_id    
+      AND status  != 'done';  
 
     RETURN v_count;
 EXCEPTION
@@ -35,12 +34,7 @@ EXCEPTION
 END get_active_jobs;
 /
 
--- ============================================================
--- PROCEDURE: create_work_order
--- Topic 3 (operators): :=  =  !=  <=  >  -  ||
--- Topic 4 (flow control): IF-THEN-ELSE, CASE expression
--- Topic 5 (procedures): IN / OUT parameters
--- ============================================================
+
 CREATE OR REPLACE PROCEDURE create_work_order(
     p_ship_id     IN  NUMBER,
     p_title       IN  VARCHAR2,
@@ -50,7 +44,7 @@ CREATE OR REPLACE PROCEDURE create_work_order(
     p_result      OUT VARCHAR2
 )
 IS
-    v_ship_count  NUMBER      := 0;   -- := assignment operator
+    v_ship_count  NUMBER      := 0;   
     v_new_id      NUMBER      := 0;
     v_status      VARCHAR2(20);
     v_days        NUMBER;
@@ -59,18 +53,17 @@ BEGIN
     -- Validate: ship must exist
     SELECT COUNT(*) INTO v_ship_count
     FROM ships
-    WHERE ship_id = p_ship_id;    -- = comparison operator
-
+    WHERE ship_id = p_ship_id; 
     -- IF-THEN: guard clause
     IF v_ship_count = 0 THEN
         p_result := 'ERROR: Ship not found';
         RETURN;
     END IF;
 
-    -- Arithmetic operator -: calculate duration in days
+    
     v_days := p_end_date - p_start_date;
 
-    -- CASE expression: set status based on start date
+   
     v_status := CASE
         WHEN p_start_date <= SYSDATE THEN 'in_progress'  -- <= comparison
         WHEN p_start_date >  SYSDATE THEN 'pending'      -- >  comparison
@@ -150,17 +143,13 @@ BEGIN
 END trg_berth_status;
 /
 
--- ============================================================
--- TRIGGER: trg_reduce_stock
--- Topic 7 (triggers): AFTER INSERT, :NEW, arithmetic operator -
--- Fires when material is used; deducts quantity automatically.
--- ============================================================
+
 CREATE OR REPLACE TRIGGER trg_reduce_stock
 AFTER INSERT ON material_usage
 FOR EACH ROW
 BEGIN
     UPDATE materials
-    SET    quantity = quantity - :NEW.qty_used   -- arithmetic -
+    SET    quantity = quantity - :NEW.qty_used 
     WHERE  material_id = :NEW.material_id;
 END trg_reduce_stock;
 /

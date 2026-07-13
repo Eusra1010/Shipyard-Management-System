@@ -7,6 +7,59 @@ use Illuminate\Support\Facades\DB;
 
 class WorkOrderController extends Controller
 {
+    public function index()
+    {
+        try {
+            $orders = DB::select("
+                SELECT w.order_id, w.title, w.status,
+                       TO_CHAR(w.created_at, 'DD Mon YYYY') AS created_date,
+                       s.ship_name
+                FROM work_orders w
+                JOIN ships s ON w.ship_id = s.ship_id
+                ORDER BY w.created_at DESC
+            ");
+
+            $workerRows = DB::select("
+                SELECT ww.order_id, wk.name, wk.role
+                FROM work_order_workers ww
+                JOIN workers wk ON wk.worker_id = ww.worker_id
+                ORDER BY ww.order_id, wk.name
+            ");
+
+            $materialRows = DB::select("
+                SELECT mu.order_id, m.name, mu.qty_used, m.unit
+                FROM material_usage mu
+                JOIN materials m ON m.material_id = mu.material_id
+                ORDER BY mu.order_id, m.name
+            ");
+
+            $workersByOrder   = [];
+            foreach ($workerRows as $row) {
+                $workersByOrder[$row->order_id][] = $row;
+            }
+
+            $materialsByOrder = [];
+            foreach ($materialRows as $row) {
+                $materialsByOrder[$row->order_id][] = $row;
+            }
+
+            $activeCount = DB::selectOne("
+                SELECT COUNT(*) AS cnt FROM work_orders
+                WHERE status IN ('pending', 'in_progress')
+            ")->cnt;
+
+        } catch (\Exception $e) {
+            $orders           = [];
+            $workersByOrder   = [];
+            $materialsByOrder = [];
+            $activeCount      = 0;
+        }
+
+        return view('work-orders.index', compact(
+            'orders', 'workersByOrder', 'materialsByOrder', 'activeCount'
+        ));
+    }
+
     public function create()
     {
         $ships = DB::select("
@@ -56,6 +109,6 @@ class WorkOrderController extends Controller
             return back()->withInput()->withErrors(['oracle' => $result]);
         }
 
-        return redirect()->route('dashboard')->with('success', 'Work order created successfully.');
+        return redirect()->route('work-orders.index')->with('success', 'Work order created successfully.');
     }
 }

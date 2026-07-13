@@ -83,7 +83,7 @@
         <a href="#" class="{{ request()->routeIs('berths.*') ? 'active' : '' }}">
             <i class="fas fa-water"></i> Berths
         </a>
-        <a href="{{ route('work-orders.create') }}" class="{{ request()->routeIs('work-orders.*') ? 'active' : '' }}">
+        <a href="{{ route('work-orders.index') }}" class="{{ request()->routeIs('work-orders.*') ? 'active' : '' }}">
             <i class="fas fa-clipboard-list"></i> Work Orders
         </a>
         <a href="#" class="{{ request()->routeIs('workers.*') ? 'active' : '' }}">
