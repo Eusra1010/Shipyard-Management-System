@@ -9,9 +9,7 @@
 <div style="margin-bottom:1.2rem;">
     <div style="font-size:11px;font-weight:600;color:#2563eb;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;">Operations</div>
     <h1 style="font-size:20px;font-weight:700;color:#0f172a;">Create work order</h1>
-    <p style="font-size:13px;color:#64748b;margin-top:4px;">
-        Uses the Oracle stored procedure <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:12px;">create_work_order</code>
-    </p>
+    <p style="font-size:13px;color:#64748b;margin-top:4px;">Fill in the details below to assign a repair or maintenance job to a ship.</p>
 </div>
 
 <div style="max-width:640px;">
@@ -95,14 +93,6 @@
         </form>
     </div>
 
-    <div style="margin-top:12px;padding:12px 14px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;font-size:12px;color:#1e40af;line-height:1.6;">
-        <strong>PL/SQL:</strong> submitting this form calls the Oracle stored procedure
-        <code style="background:#dbeafe;padding:1px 5px;border-radius:3px;">create_work_order</code>
-        via PDO. The procedure validates the ship, calculates duration (<code>-</code> operator),
-        uses a <code>CASE</code> expression to set the initial status, generates the order ID
-        with <code>NVL(MAX(...),0)+1</code>, and builds the result message with the
-        <code>||</code> concatenation operator.
-    </div>
 </div>
 
 @endsection

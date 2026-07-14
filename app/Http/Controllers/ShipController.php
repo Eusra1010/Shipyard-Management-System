@@ -28,6 +28,57 @@ class ShipController extends Controller
         return view('ships.create');
     }
 
+    public function edit($id)
+    {
+        $ship = DB::selectOne("
+            SELECT ship_id, ship_name, ship_type, owner_name, tonnage, flag_country,
+                   status, TO_CHAR(arrival_date, 'YYYY-MM-DD') AS arrival_date
+            FROM ships WHERE ship_id = ?
+        ", [$id]);
+
+        if (!$ship) abort(404);
+
+        return view('ships.edit', compact('ship'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = $request->validate([
+            'ship_name'    => 'required|string|max:100',
+            'ship_type'    => 'nullable|string|max:50',
+            'owner_name'   => 'nullable|string|max:100',
+            'tonnage'      => 'nullable|integer|min:1',
+            'flag_country' => 'nullable|string|max:50',
+            'status'       => 'required|in:docked,in_repair,departed',
+            'arrival_date' => 'nullable|date',
+        ]);
+
+        DB::update("
+            UPDATE ships SET
+                ship_name    = ?,
+                ship_type    = ?,
+                owner_name   = ?,
+                tonnage      = ?,
+                flag_country = ?,
+                status       = ?,
+                arrival_date = TO_DATE(?, 'YYYY-MM-DD'),
+                updated_at   = SYSDATE
+            WHERE ship_id = ?
+        ", [
+            $data['ship_name'],
+            $data['ship_type']    ?? null,
+            $data['owner_name']   ?? null,
+            $data['tonnage']      ?? null,
+            $data['flag_country'] ?? null,
+            $data['status'],
+            $data['arrival_date'] ?? null,
+            $id,
+        ]);
+
+        return redirect()->route('ships.index')
+                         ->with('success', "\"{$data['ship_name']}\" updated successfully.");
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([

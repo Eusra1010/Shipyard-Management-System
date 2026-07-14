@@ -29,6 +29,7 @@
                 <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;">Jobs</th>
                 <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;">Status</th>
                 <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;">Arrived</th>
+                <th style="padding:12px 16px;"></th>
             </tr>
         </thead>
         <tbody>
@@ -79,6 +80,12 @@
                 </td>
                 <td style="padding:13px 16px;color:#64748b;font-size:12px;">
                     {{ $ship->arrival_date ? \Carbon\Carbon::parse($ship->arrival_date)->format('d M Y') : '—' }}
+                </td>
+                <td style="padding:13px 16px;text-align:right;">
+                    <a href="{{ route('ships.edit', $ship->ship_id) }}"
+                       style="font-size:12px;font-weight:500;color:#2563eb;white-space:nowrap;">
+                        Edit
+                    </a>
                 </td>
             </tr>
             @empty

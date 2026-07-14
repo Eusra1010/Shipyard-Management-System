@@ -135,10 +135,17 @@ FOR EACH ROW
 BEGIN
     -- :OLD.status = value before update, :NEW.status = value after
     IF :NEW.status = 'departed' AND :OLD.status != 'departed' THEN
+        -- Free the berth
         UPDATE berths
         SET    status  = 'free',
                ship_id = NULL
         WHERE  ship_id = :NEW.ship_id;
+
+        -- Close all active work orders for the departing ship
+        UPDATE work_orders
+        SET    status = 'done'
+        WHERE  ship_id = :NEW.ship_id
+          AND  status IN ('pending', 'in_progress');
     END IF;
 END trg_berth_status;
 /

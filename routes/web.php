@@ -17,6 +17,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ships', [ShipController::class, 'index'])->name('ships.index');
     Route::get('/ships/create', [ShipController::class, 'create'])->name('ships.create');
     Route::post('/ships', [ShipController::class, 'store'])->name('ships.store');
+    Route::get('/ships/{id}/edit', [ShipController::class, 'edit'])->name('ships.edit');
+    Route::patch('/ships/{id}', [ShipController::class, 'update'])->name('ships.update');
 
     Route::get('/work-orders', [WorkOrderController::class, 'index'])->name('work-orders.index');
     Route::get('/work-orders/create', [WorkOrderController::class, 'create'])->name('work-orders.create');
