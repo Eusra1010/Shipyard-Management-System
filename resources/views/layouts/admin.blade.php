@@ -86,7 +86,7 @@
         <a href="{{ route('work-orders.index') }}" class="{{ request()->routeIs('work-orders.*') ? 'active' : '' }}">
             <i class="fas fa-clipboard-list"></i> Work Orders
         </a>
-        <a href="#" class="{{ request()->routeIs('workers.*') ? 'active' : '' }}">
+        <a href="{{ route('workers.index') }}" class="{{ request()->routeIs('workers.*') ? 'active' : '' }}">
             <i class="fas fa-hard-hat"></i> Workers
         </a>
         <a href="#" class="{{ request()->routeIs('materials.*') ? 'active' : '' }}">
@@ -95,6 +95,9 @@
 
         @if(Auth::user()->role === 'admin')
         <span class="nav-section">Admin</span>
+        <a href="{{ route('admin.news.index') }}" class="{{ request()->routeIs('admin.news.*') ? 'active' : '' }}">
+            <i class="fas fa-newspaper"></i> News
+        </a>
         <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
             <i class="fas fa-users-cog"></i> Manage Users
         </a>
