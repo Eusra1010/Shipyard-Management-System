@@ -81,16 +81,26 @@
                 <td style="padding:13px 16px;color:#64748b;font-size:12px;">
                     {{ $ship->arrival_date ? \Carbon\Carbon::parse($ship->arrival_date)->format('d M Y') : '—' }}
                 </td>
-                <td style="padding:13px 16px;text-align:right;">
+                <td style="padding:13px 16px;text-align:right;white-space:nowrap;">
                     <a href="{{ route('ships.edit', $ship->ship_id) }}"
-                       style="font-size:12px;font-weight:500;color:#2563eb;white-space:nowrap;">
+                       style="font-size:12px;font-weight:500;color:#2563eb;margin-right:14px;">
                         Edit
                     </a>
+                    <form method="POST" action="{{ route('ships.destroy', $ship->ship_id) }}"
+                          style="display:inline;"
+                          onsubmit="return confirm('Delete {{ addslashes($ship->ship_name) }}? This will also remove all its work orders.')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                                style="font-size:12px;font-weight:500;color:#dc2626;background:none;border:none;cursor:pointer;padding:0;">
+                            Delete
+                        </button>
+                    </form>
                 </td>
             </tr>
             @empty
             <tr>
-                <td colspan="8" style="padding:3rem;text-align:center;color:#94a3b8;">
+                <td colspan="9" style="padding:3rem;text-align:center;color:#94a3b8;">
                     <i class="fas fa-ship" style="font-size:28px;margin-bottom:10px;display:block;opacity:.3;"></i>
                     No ships registered yet.
                     <a href="{{ route('ships.create') }}" style="color:#2563eb;font-weight:600;">Register the first one.</a>

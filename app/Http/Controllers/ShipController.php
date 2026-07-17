@@ -79,6 +79,21 @@ class ShipController extends Controller
                          ->with('success', "\"{$data['ship_name']}\" updated successfully.");
     }
 
+    public function destroy($id)
+    {
+        $ship = DB::selectOne("SELECT ship_name FROM ships WHERE ship_id = ?", [$id]);
+        if (!$ship) abort(404);
+
+        DB::delete("DELETE FROM work_order_workers WHERE order_id IN (SELECT order_id FROM work_orders WHERE ship_id = ?)", [$id]);
+        DB::delete("DELETE FROM material_usage     WHERE order_id IN (SELECT order_id FROM work_orders WHERE ship_id = ?)", [$id]);
+        DB::delete("DELETE FROM work_orders WHERE ship_id = ?", [$id]);
+        DB::update("UPDATE berths SET ship_id = NULL, status = 'free' WHERE ship_id = ?", [$id]);
+        DB::delete("DELETE FROM ships WHERE ship_id = ?", [$id]);
+
+        return redirect()->route('ships.index')
+                         ->with('success', "\"{$ship->ship_name}\" has been deleted.");
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
