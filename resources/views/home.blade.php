@@ -1,7 +1,7 @@
 @extends('app')
 @section('title', 'Home')
 
-@section('content')
+@section('full-hero')
 
 {{-- ════════════════════════════════
      CAROUSEL HERO
@@ -208,34 +208,43 @@
     </div>
 
 </div>
+@endsection
 
-{{-- ── Hero headline (below the carousel, clean separation) ── --}}
-<div style="background:#0a1628;padding:2.8rem 2.5rem 2.4rem;text-align:center;border-bottom:1px solid #1e293b;">
-    <span style="display:inline-block;font-size:10px;font-weight:700;color:#60a5fa;background:#1e3a5f;border-radius:999px;padding:4px 16px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.12em;">
-        Est. 1998 · Chittagong Port, Bangladesh
-    </span>
-    <h1 style="font-size:clamp(22px,4vw,34px);font-weight:800;color:#f1f5f9;max-width:540px;margin:0 auto .85rem;line-height:1.22;">
-        Where ships are restored to full strength
-    </h1>
-    <p style="font-size:13px;color:#94a3b8;max-width:440px;margin:0 auto 1.8rem;line-height:1.8;">
-        Full-service ship repair and maintenance — engine overhauls, hull restoration, structural welding, and electrical systems, all under one roof.
-    </p>
-    <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
-        @guest
-            <a href="{{ route('login') }}" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;padding:11px 28px;background:#1d4ed8;color:#fff;border-radius:8px;border:1.5px solid #2563eb;">
-                <i class="fas fa-sign-in-alt"></i> Access system
-            </a>
-        @endguest
-        @auth
-            <a href="{{ route('dashboard') }}" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;padding:11px 28px;background:#1d4ed8;color:#fff;border-radius:8px;">
-                <i class="fas fa-tachometer-alt"></i> Dashboard
-            </a>
-        @endauth
-        <a href="{{ route('projects') }}" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;padding:11px 28px;border:1.5px solid #334155;border-radius:8px;color:#cbd5e1;">
-            <i class="fas fa-folder-open"></i> View projects
-        </a>
+@section('content')
+{{-- ── What We Offer (directly below carousel) ── --}}
+<section style="padding:3.5rem 2.5rem;background:#f8fafc;border-bottom:1px solid #e2e8f0;">
+    <div style="max-width:960px;margin:0 auto;">
+
+        <div style="text-align:center;margin-bottom:2rem;">
+            <div style="font-size:11px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.1em;">What we offer</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+
+            <div style="padding:1.4rem;border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
+                <i class="fas fa-anchor" style="font-size:28px;color:#1d4ed8;margin-bottom:10px;display:block;"></i>
+                <div style="font-size:16px;font-weight:800;color:#0f172a;margin-bottom:6px;">Our Expertise</div>
+                <div style="font-size:12px;color:#64748b;line-height:1.7;margin-bottom:16px;">Over 25 years of specialist engineers delivering precision marine repair to international standards.</div>
+                <a href="{{ route('team') }}" style="font-size:11px;font-weight:700;letter-spacing:.08em;color:#1d4ed8;text-decoration:underline;text-transform:uppercase;">See our team</a>
+            </div>
+
+            <div style="padding:1.4rem;border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
+                <i class="fas fa-warehouse" style="font-size:28px;color:#0f172a;margin-bottom:10px;display:block;"></i>
+                <div style="font-size:16px;font-weight:800;color:#0f172a;margin-bottom:6px;">Our Facility</div>
+                <div style="font-size:12px;color:#64748b;line-height:1.7;margin-bottom:16px;">8 berths, a full dry dock, and specialist workshops covering every aspect of ship repair.</div>
+                <a href="#" style="font-size:11px;font-weight:700;letter-spacing:.08em;color:#1d4ed8;text-decoration:underline;text-transform:uppercase;">See our yard</a>
+            </div>
+
+            <div style="padding:1.4rem;border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
+                <i class="fas fa-list-check" style="font-size:28px;color:#1d4ed8;margin-bottom:10px;display:block;"></i>
+                <div style="font-size:16px;font-weight:800;color:#0f172a;margin-bottom:6px;">Our Process</div>
+                <div style="font-size:12px;color:#64748b;line-height:1.7;margin-bottom:16px;">From initial survey to sea trial, every repair follows a structured workflow tracked in our system.</div>
+                <a href="#" style="font-size:11px;font-weight:700;letter-spacing:.08em;color:#1d4ed8;text-decoration:underline;text-transform:uppercase;">See our process</a>
+            </div>
+
+        </div>
     </div>
-</div>
+</section>
 
 <script>
 (function () {
@@ -516,7 +525,7 @@
 {{-- ════════════════════════════════
      FOOTER WITH CONTACT
 ════════════════════════════════ --}}
-<footer id="contact" style="background:#0a1628;color:#94a3b8;padding:4rem 2.5rem 1.5rem;border-top:3px solid #1d4ed8;">
+<footer id="contact" style="background:#1e2637;color:#94a3b8;padding:4rem 2.5rem 1.5rem;border-top:3px solid #1d4ed8;">
     <div style="max-width:960px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem;">
 
         {{-- Contact form --}}
@@ -527,14 +536,14 @@
                 @csrf
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
                     <input type="text" name="name" placeholder="Your name"
-                           style="font-size:12px;padding:9px 12px;border:1.5px solid #1e293b;border-radius:7px;background:#0f172a;color:#e2e8f0;outline:none;">
+                           style="font-size:12px;padding:9px 12px;border:1.5px solid #1e293b;border-radius:7px;background:#141d2b;color:#e2e8f0;outline:none;">
                     <input type="email" name="email" placeholder="Email address"
-                           style="font-size:12px;padding:9px 12px;border:1.5px solid #1e293b;border-radius:7px;background:#0f172a;color:#e2e8f0;outline:none;">
+                           style="font-size:12px;padding:9px 12px;border:1.5px solid #1e293b;border-radius:7px;background:#141d2b;color:#e2e8f0;outline:none;">
                 </div>
                 <input type="text" name="subject" placeholder="Subject (e.g. Engine repair enquiry)"
-                       style="font-size:12px;padding:9px 12px;border:1.5px solid #1e293b;border-radius:7px;background:#0f172a;color:#e2e8f0;outline:none;">
+                       style="font-size:12px;padding:9px 12px;border:1.5px solid #1e293b;border-radius:7px;background:#141d2b;color:#e2e8f0;outline:none;">
                 <textarea name="message" rows="3" placeholder="Tell us about your vessel and the work required..."
-                          style="font-size:12px;padding:9px 12px;border:1.5px solid #1e293b;border-radius:7px;background:#0f172a;color:#e2e8f0;outline:none;resize:vertical;font-family:inherit;"></textarea>
+                          style="font-size:12px;padding:9px 12px;border:1.5px solid #1e293b;border-radius:7px;background:#141d2b;color:#e2e8f0;outline:none;resize:vertical;font-family:inherit;"></textarea>
                 <button type="submit" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:600;padding:10px;border-radius:7px;background:#1d4ed8;color:#fff;border:none;cursor:pointer;">
                     <i class="fas fa-paper-plane"></i> Send message
                 </button>
@@ -568,25 +577,59 @@
             </div>
         </div>
 
-        {{-- Quick links --}}
+        {{-- Important links + social --}}
         <div>
-            <div style="font-size:11px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;">Quick links</div>
-            <div style="display:flex;flex-direction:column;gap:9px;">
-                <a href="{{ route('home') }}"     style="font-size:13px;color:#64748b;display:flex;align-items:center;gap:7px;"><i class="fas fa-chevron-right" style="font-size:9px;color:#3b82f6;"></i>Home</a>
-                <a href="#about"                  style="font-size:13px;color:#64748b;display:flex;align-items:center;gap:7px;"><i class="fas fa-chevron-right" style="font-size:9px;color:#3b82f6;"></i>About us</a>
-                <a href="{{ route('projects') }}" style="font-size:13px;color:#64748b;display:flex;align-items:center;gap:7px;"><i class="fas fa-chevron-right" style="font-size:9px;color:#3b82f6;"></i>Projects</a>
-                <a href="#gallery"                style="font-size:13px;color:#64748b;display:flex;align-items:center;gap:7px;"><i class="fas fa-chevron-right" style="font-size:9px;color:#3b82f6;"></i>Gallery</a>
-                <a href="#contact"                style="font-size:13px;color:#64748b;display:flex;align-items:center;gap:7px;"><i class="fas fa-chevron-right" style="font-size:9px;color:#3b82f6;"></i>Contact</a>
-                @guest
-                <a href="{{ route('login') }}"    style="font-size:13px;color:#64748b;display:flex;align-items:center;gap:7px;"><i class="fas fa-chevron-right" style="font-size:9px;color:#3b82f6;"></i>Sign in</a>
-                @endguest
+            <div style="font-size:11px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;">Important links</div>
+            <div style="display:flex;flex-direction:column;gap:11px;">
+                <a href="https://www.navy.mil.bd" target="_blank" rel="noopener"
+                   style="font-size:15px;color:#94a3b8;display:flex;align-items:center;gap:8px;transition:color .15s;"
+                   onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#94a3b8'">
+                    <i class="fas fa-chevron-right" style="font-size:9px;color:#3b82f6;flex-shrink:0;"></i>Bangladesh Navy
+                </a>
+                <a href="https://www.coastguard.gov.bd" target="_blank" rel="noopener"
+                   style="font-size:15px;color:#94a3b8;display:flex;align-items:center;gap:8px;transition:color .15s;"
+                   onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#94a3b8'">
+                    <i class="fas fa-chevron-right" style="font-size:9px;color:#3b82f6;flex-shrink:0;"></i>Bangladesh Coast Guard
+                </a>
+                <a href="https://www.khulnashipyard.gov.bd" target="_blank" rel="noopener"
+                   style="font-size:15px;color:#94a3b8;display:flex;align-items:center;gap:8px;transition:color .15s;"
+                   onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#94a3b8'">
+                    <i class="fas fa-chevron-right" style="font-size:9px;color:#3b82f6;flex-shrink:0;"></i>Khulna Shipyard Limited
+                </a>
+                <a href="https://www.cpa.gov.bd" target="_blank" rel="noopener"
+                   style="font-size:15px;color:#94a3b8;display:flex;align-items:center;gap:8px;transition:color .15s;"
+                   onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#94a3b8'">
+                    <i class="fas fa-chevron-right" style="font-size:9px;color:#3b82f6;flex-shrink:0;"></i>Chittagong Port Authority
+                </a>
+                <a href="https://dos.gov.bd" target="_blank" rel="noopener"
+                   style="font-size:15px;color:#94a3b8;display:flex;align-items:center;gap:8px;transition:color .15s;"
+                   onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#94a3b8'">
+                    <i class="fas fa-chevron-right" style="font-size:9px;color:#3b82f6;flex-shrink:0;"></i>Dept. of Shipping BD
+                </a>
+            </div>
+
+            {{-- Social media --}}
+            <div style="margin-top:24px;">
+                <div style="font-size:11px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;">Follow us</div>
+                <div style="display:flex;gap:10px;">
+                    <a href="https://www.linkedin.com" target="_blank" rel="noopener"
+                       style="display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:8px;background:#0077b5;color:#fff;font-size:16px;transition:opacity .15s;"
+                       onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.facebook.com" target="_blank" rel="noopener"
+                       style="display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:8px;background:#1877f2;color:#fff;font-size:16px;transition:opacity .15s;"
+                       onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
     <div style="max-width:960px;margin:0 auto;border-top:1px solid #1e293b;padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-        <p style="font-size:12px;color:#334155;">NavalForge &copy; {{ date('Y') }} — All rights reserved.</p>
-        <p style="font-size:12px;color:#334155;">Powered by Laravel &amp; Oracle Database</p>
+        <p style="font-size:15px;color:#475569;font-weight:500;">NavalForge &copy; {{ date('Y') }} — All rights reserved.</p>
+        <p style="font-size:14px;color:#334155;">Powered by Laravel &amp; Oracle Database</p>
     </div>
 </footer>
 

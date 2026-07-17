@@ -10,13 +10,44 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Arial, sans-serif; color: #1e293b; background: #fff; }
         a { text-decoration: none; color: inherit; }
+
+        /* ── Page layout ── */
+        .site-body {
+            display: flex;
+            align-items: flex-start;
+            min-height: calc(100vh - 118px);
+        }
+
+        /* ── Left sidebar column ── */
+        .ns-col {
+            width: 260px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 50px;
+            height: calc(100vh - 50px);
+            background: #f8fafc;
+            border-right: 1px solid #dde3ed;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 10;
+        }
+        @media (max-width: 1060px) {
+            .ns-col { display: none; }
+        }
+
+        /* ── Main content column ── */
+        .site-main {
+            flex: 1;
+            min-width: 0;
+            overflow-x: hidden;
+        }
     </style>
 </head>
 <body>
 
 {{-- ── Top identity bar ── --}}
 <div style="background:#0a1628;padding:10px 2.5rem;display:flex;align-items:center;gap:16px;border-bottom:1px solid #1e3a5f;">
-    {{-- Logo placeholder — replace src with your real logo file in public/images/logo.png --}}
     <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#1d4ed8,#0ea5e9);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
         <i class="fas fa-ship" style="font-size:22px;color:#fff;"></i>
     </div>
@@ -56,8 +87,12 @@
            style="font-size:13px;font-weight:600;padding:6px 16px;border-radius:4px;color:{{ request()->routeIs('projects') ? '#fff' : '#94a3b8' }};background:{{ request()->routeIs('projects') ? '#1d4ed8' : 'transparent' }};">
             <i class="fas fa-folder-open" style="margin-right:6px;font-size:11px;"></i>Projects
         </a>
-        <a href="#news"
-           style="font-size:13px;font-weight:600;padding:6px 16px;border-radius:4px;color:#94a3b8;">
+        <a href="{{ route('team') }}"
+           style="font-size:13px;font-weight:600;padding:6px 16px;border-radius:4px;color:{{ request()->routeIs('team') ? '#fff' : '#94a3b8' }};background:{{ request()->routeIs('team') ? '#1d4ed8' : 'transparent' }};">
+            <i class="fas fa-users" style="margin-right:6px;font-size:11px;"></i>Our Team
+        </a>
+        <a href="{{ route('news.index') }}"
+           style="font-size:13px;font-weight:600;padding:6px 16px;border-radius:4px;color:{{ request()->routeIs('news.*') ? '#fff' : '#94a3b8' }};background:{{ request()->routeIs('news.*') ? '#1d4ed8' : 'transparent' }};">
             <i class="fas fa-newspaper" style="margin-right:6px;font-size:11px;"></i>News
         </a>
         <a href="#contact"
@@ -67,7 +102,23 @@
     </div>
 </nav>
 
-@yield('content')
+{{-- ── Full-width hero zone (carousel on home, empty on other pages) ── --}}
+@yield('full-hero')
+
+{{-- ── Site body: left sidebar + main content ── --}}
+<div class="site-body">
+
+    {{-- Left sidebar ── --}}
+    <aside class="ns-col">
+        @include('partials.news-sidebar')
+    </aside>
+
+    {{-- Main content ── --}}
+    <div class="site-main">
+        @yield('content')
+    </div>
+
+</div>
 
 </body>
 </html>
