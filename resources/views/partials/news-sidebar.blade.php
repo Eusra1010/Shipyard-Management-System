@@ -79,7 +79,7 @@
 
 /* ── Scroll area ── */
 .nsp-wrap {
-    flex: 1;
+    height: 350px;
     overflow: hidden;
     position: relative;
 }

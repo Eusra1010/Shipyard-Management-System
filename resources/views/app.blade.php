@@ -22,15 +22,10 @@
         .ns-col {
             width: 260px;
             flex-shrink: 0;
-            position: sticky;
-            top: 50px;
-            height: calc(100vh - 50px);
             background: #f8fafc;
             border-right: 1px solid #dde3ed;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            z-index: 10;
         }
         @media (max-width: 1060px) {
             .ns-col { display: none; }
@@ -91,6 +86,14 @@
            style="font-size:13px;font-weight:600;padding:6px 16px;border-radius:4px;color:{{ request()->routeIs('team') ? '#fff' : '#94a3b8' }};background:{{ request()->routeIs('team') ? '#1d4ed8' : 'transparent' }};">
             <i class="fas fa-users" style="margin-right:6px;font-size:11px;"></i>Our Team
         </a>
+        <a href="{{ route('facility') }}"
+           style="font-size:13px;font-weight:600;padding:6px 16px;border-radius:4px;color:{{ request()->routeIs('facility') ? '#fff' : '#94a3b8' }};background:{{ request()->routeIs('facility') ? '#1d4ed8' : 'transparent' }};">
+            <i class="fas fa-warehouse" style="margin-right:6px;font-size:11px;"></i>Facility
+        </a>
+        <a href="{{ route('process') }}"
+           style="font-size:13px;font-weight:600;padding:6px 16px;border-radius:4px;color:{{ request()->routeIs('process') ? '#fff' : '#94a3b8' }};background:{{ request()->routeIs('process') ? '#1d4ed8' : 'transparent' }};">
+            <i class="fas fa-list-ol" style="margin-right:6px;font-size:11px;"></i>Process
+        </a>
         <a href="{{ route('news.index') }}"
            style="font-size:13px;font-weight:600;padding:6px 16px;border-radius:4px;color:{{ request()->routeIs('news.*') ? '#fff' : '#94a3b8' }};background:{{ request()->routeIs('news.*') ? '#1d4ed8' : 'transparent' }};">
             <i class="fas fa-newspaper" style="margin-right:6px;font-size:11px;"></i>News
@@ -119,6 +122,9 @@
     </div>
 
 </div>
+
+{{-- ── Full-width footer (home page contact/footer section) ── --}}
+@yield('footer')
 
 </body>
 </html>

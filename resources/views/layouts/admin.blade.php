@@ -80,7 +80,7 @@
 
         <span class="nav-section">Operations</span>
 
-        <a href="#" class="{{ request()->routeIs('berths.*') ? 'active' : '' }}">
+        <a href="{{ route('berths.index') }}" class="{{ request()->routeIs('berths.*') ? 'active' : '' }}">
             <i class="fas fa-water"></i> Berths
         </a>
         <a href="{{ route('work-orders.index') }}" class="{{ request()->routeIs('work-orders.*') ? 'active' : '' }}">
@@ -89,7 +89,7 @@
         <a href="{{ route('workers.index') }}" class="{{ request()->routeIs('workers.*') ? 'active' : '' }}">
             <i class="fas fa-hard-hat"></i> Workers
         </a>
-        <a href="#" class="{{ request()->routeIs('materials.*') ? 'active' : '' }}">
+        <a href="{{ route('materials.index') }}" class="{{ request()->routeIs('materials.*') ? 'active' : '' }}">
             <i class="fas fa-boxes"></i> Materials
         </a>
 

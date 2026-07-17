@@ -232,7 +232,7 @@
                 <i class="fas fa-warehouse" style="font-size:28px;color:#0f172a;margin-bottom:10px;display:block;"></i>
                 <div style="font-size:16px;font-weight:800;color:#0f172a;margin-bottom:6px;">Our Facility</div>
                 <div style="font-size:12px;color:#64748b;line-height:1.7;margin-bottom:16px;">8 berths, a full dry dock, and specialist workshops covering every aspect of ship repair.</div>
-                <a href="#" style="font-size:11px;font-weight:700;letter-spacing:.08em;color:#1d4ed8;text-decoration:underline;text-transform:uppercase;">See our yard</a>
+                <a href="{{ route('facility') }}" style="font-size:11px;font-weight:700;letter-spacing:.08em;color:#1d4ed8;text-decoration:underline;text-transform:uppercase;">See our yard</a>
             </div>
 
             <div style="padding:1.4rem;border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
@@ -522,9 +522,9 @@
     </div>
 </section>
 
-{{-- ════════════════════════════════
-     FOOTER WITH CONTACT
-════════════════════════════════ --}}
+@endsection
+
+@section('footer')
 <footer id="contact" style="background:#1e2637;color:#94a3b8;padding:4rem 2.5rem 1.5rem;border-top:3px solid #1d4ed8;">
     <div style="max-width:960px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem;">
 
@@ -617,7 +617,7 @@
                        onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'" title="LinkedIn">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
-                    <a href="https://www.facebook.com" target="_blank" rel="noopener"
+                    <a href="https://www.facebook.com/WesternMarineShipyard/" target="_blank" rel="noopener"
                        style="display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:8px;background:#1877f2;color:#fff;font-size:16px;transition:opacity .15s;"
                        onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'" title="Facebook">
                         <i class="fab fa-facebook-f"></i>
@@ -632,5 +632,4 @@
         <p style="font-size:14px;color:#334155;">Powered by Laravel &amp; Oracle Database</p>
     </div>
 </footer>
-
 @endsection
