@@ -244,6 +244,18 @@ class WorkOrderController extends Controller
         return view('work-orders.create', compact('ships'));
     }
 
+    public function destroy($id)
+    {
+        $order = DB::selectOne("SELECT order_id FROM work_orders WHERE order_id = :id", ['id' => $id]);
+        if (!$order) abort(404);
+
+        DB::delete("DELETE FROM work_order_workers WHERE order_id = :id", ['id' => $id]);
+        DB::delete("DELETE FROM material_usage WHERE order_id = :id", ['id' => $id]);
+        DB::delete("DELETE FROM work_orders WHERE order_id = :id", ['id' => $id]);
+
+        return redirect()->route('work-orders.index')->with('success', 'Work order deleted.');
+    }
+
     public function store(Request $request)
     {
         $request->validate([

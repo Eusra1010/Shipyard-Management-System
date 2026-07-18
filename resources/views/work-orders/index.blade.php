@@ -282,6 +282,17 @@ tr.data-row.row-expanded .wo-chevron { transform: rotate(180deg); }
                                     <path d="M10.5 2.5l2 2L5 12H3v-2l7.5-7.5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </a>
+                            <form method="POST" action="{{ route('work-orders.destroy', $order->order_id) }}"
+                                  style="display:inline;"
+                                  onsubmit="event.stopPropagation();return confirm('Delete this work order?')">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="action-btn" title="Delete"
+                                        style="color:#dc2626;background:none;border:none;cursor:pointer;padding:0;">
+                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+                                        <path d="M2 4h11M5 4V3h5v1M6 7v4M9 7v4M3 4l1 9h7l1-9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>
