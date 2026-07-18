@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\SupervisorController;
+use App\Http\Controllers\WeatherController;
 
 class DashboardController extends Controller
 {
@@ -68,10 +69,37 @@ class DashboardController extends Controller
             $berthGrid = $recentOrders = $lowStockMaterials = [];
         }
 
+        // Weather + forecast risk
+        $weather      = null;
+        $forecastRisk = ['outdoor_risk' => false, 'earliest_risk' => null, 'risk_reason' => null];
+        $outdoorJobs  = [];
+
+        if (config('services.openweather.key')) {
+            try {
+                $wx           = app(WeatherController::class);
+                $weather      = $wx->getCurrentWeather();
+                $forecastRisk = $wx->getForecastRisk();
+
+                if ($forecastRisk['outdoor_risk']) {
+                    $outdoorJobs = DB::select("
+                        SELECT w.order_id, w.title, s.ship_name
+                        FROM work_orders w
+                        JOIN ships s ON s.ship_id = w.ship_id
+                        WHERE w.status != 'done'
+                        AND w.is_outdoor_sensitive = 1
+                        ORDER BY w.order_id DESC
+                    ");
+                }
+            } catch (\Exception $e) {
+                // API unavailable — dashboard still loads without weather
+            }
+        }
+
         return view('dashboard', compact(
             'activeShips', 'totalBerths', 'freeBerths', 'occupiedBerths',
             'activeOrders', 'lowStockCount', 'berthGrid', 'recentOrders',
-            'lowStockMaterials', 'totalWorkers', 'assignedWorkers'
+            'lowStockMaterials', 'totalWorkers', 'assignedWorkers',
+            'weather', 'forecastRisk', 'outdoorJobs'
         ));
     }
 }

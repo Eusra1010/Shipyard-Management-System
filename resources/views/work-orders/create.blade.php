@@ -80,6 +80,19 @@
                 </div>
             </div>
 
+            {{-- Outdoor sensitive --}}
+            <div style="margin-bottom:20px;">
+                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                    <input type="checkbox" name="is_outdoor_sensitive" value="1"
+                           {{ old('is_outdoor_sensitive') ? 'checked' : '' }}
+                           style="width:15px;height:15px;accent-color:#f59e0b;cursor:pointer;flex-shrink:0;">
+                    <span>
+                        <span style="font-size:12px;font-weight:700;color:#374151;">Outdoor-sensitive job</span>
+                        <span style="font-size:11px;color:#94a3b8;display:block;margin-top:1px;">Flag if bad weather (rain, high wind) affects this work</span>
+                    </span>
+                </label>
+            </div>
+
             <div style="display:flex;gap:10px;">
                 <button type="submit"
                         style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;padding:10px 24px;background:#2563eb;color:#fff;border:none;border-radius:8px;cursor:pointer;">

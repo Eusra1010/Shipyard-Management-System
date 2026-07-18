@@ -129,6 +129,7 @@ class WorkOrderController extends Controller
             SELECT wo.order_id, wo.title, wo.description, wo.status,
                    TO_CHAR(wo.start_date, 'YYYY-MM-DD') AS start_date,
                    TO_CHAR(wo.end_date,   'YYYY-MM-DD') AS end_date,
+                   wo.is_outdoor_sensitive,
                    s.ship_name
             FROM work_orders wo
             JOIN ships s ON s.ship_id = wo.ship_id
@@ -178,15 +179,17 @@ class WorkOrderController extends Controller
                 description = :desc,
                 start_date = TO_DATE(:start, 'YYYY-MM-DD'),
                 end_date   = TO_DATE(:end,   'YYYY-MM-DD'),
-                status = :status
+                status = :status,
+                is_outdoor_sensitive = :outdoor
             WHERE order_id = :id
         ", [
-            'title'  => $request->title,
-            'desc'   => $request->description ?? '',
-            'start'  => $request->start_date,
-            'end'    => $request->end_date,
-            'status' => $request->status,
-            'id'     => $id,
+            'title'   => $request->title,
+            'desc'    => $request->description ?? '',
+            'start'   => $request->start_date,
+            'end'     => $request->end_date,
+            'status'  => $request->status,
+            'outdoor' => $request->boolean('is_outdoor_sensitive') ? 1 : 0,
+            'id'      => $id,
         ]);
 
         // Reassign workers
@@ -255,10 +258,11 @@ class WorkOrderController extends Controller
 
         DB::insert("
             INSERT INTO work_orders
-                (order_id, ship_id, title, description, status, priority, start_date, end_date, created_at)
+                (order_id, ship_id, title, description, status, priority, start_date, end_date,
+                 is_outdoor_sensitive, created_at)
             VALUES
                 (:id, :ship, :title, :desc, 'pending', :priority, SYSDATE,
-                 TO_DATE(:end, 'YYYY-MM-DD'), SYSDATE)
+                 TO_DATE(:end, 'YYYY-MM-DD'), :outdoor, SYSDATE)
         ", [
             'id'       => $orderId,
             'ship'     => (int) $request->ship_id,
@@ -266,6 +270,7 @@ class WorkOrderController extends Controller
             'desc'     => $request->description ?? '',
             'priority' => $request->input('priority', 'normal'),
             'end'      => $request->end_date,
+            'outdoor'  => $request->boolean('is_outdoor_sensitive') ? 1 : 0,
         ]);
 
         foreach ($request->input('worker_ids', []) as $wid) {

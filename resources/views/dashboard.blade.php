@@ -62,6 +62,32 @@
     padding:8px 0; border-bottom:1px solid #edf0f7; gap:8px;
 }
 .stock-item:last-child { border-bottom:none; }
+
+/* ── Weather card ── */
+.wx-row { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.wx-temp { font-size:32px; font-weight:800; color:#0f172a; line-height:1; }
+.wx-deg  { font-size:14px; font-weight:600; color:#64748b; }
+.wx-cond { font-size:12px; color:#475569; margin-top:2px; }
+.wx-meta { display:flex; flex-direction:column; gap:5px; }
+.wx-meta-item { display:flex; align-items:center; gap:6px; font-size:12px; color:#64748b; }
+.wx-refresh {
+    font-size:11px; font-weight:600; color:#2563eb; background:none; border:none;
+    cursor:pointer; padding:0; display:flex; align-items:center; gap:4px; margin-top:10px;
+}
+.wx-refresh:hover { color:#1d4ed8; }
+
+/* ── Risk banner ── */
+.risk-banner {
+    background:#fffbeb; border:1.5px solid #fcd34d; border-radius:10px;
+    padding:14px 16px; margin-bottom:16px;
+}
+.risk-banner-hd { display:flex; align-items:center; gap:8px;
+    font-size:13px; font-weight:700; color:#92400e; margin-bottom:8px; }
+.risk-job-row {
+    display:flex; align-items:center; gap:6px;
+    font-size:12px; color:#78350f; padding:5px 0;
+    border-top:1px solid #fde68a;
+}
 </style>
 @endpush
 
@@ -110,6 +136,34 @@
     </div>
 
 </div>
+
+{{-- ════════════════════════════════
+     RISK BANNER (amber, shown only when forecast_risk is true)
+════════════════════════════════ --}}
+@if($forecastRisk['outdoor_risk'])
+<div class="risk-banner" id="riskBanner">
+    <div class="risk-banner-hd">
+        <i class="fas fa-exclamation-triangle" style="color:#f59e0b;"></i>
+        {{ $forecastRisk['risk_reason'] }} expected from {{ $forecastRisk['earliest_risk'] }}
+        @if(count($outdoorJobs) > 0)
+            &mdash; {{ count($outdoorJobs) }} outdoor job{{ count($outdoorJobs) !== 1 ? 's' : '' }} may be affected
+        @endif
+    </div>
+    @forelse($outdoorJobs as $job)
+    <div class="risk-job-row">
+        <i class="fas fa-ship" style="color:#d97706;font-size:10px;flex-shrink:0;"></i>
+        <span style="font-weight:600;">{{ $job->ship_name }}</span>
+        <span style="color:#92400e;">·</span>
+        <a href="{{ route('work-orders.show', $job->order_id) }}"
+           style="color:#92400e;font-weight:500;text-decoration:underline;text-underline-offset:2px;">
+            {{ $job->title }}
+        </a>
+    </div>
+    @empty
+    <div style="font-size:12px;color:#92400e;margin-top:4px;">No outdoor-sensitive jobs currently active.</div>
+    @endforelse
+</div>
+@endif
 
 {{-- ════════════════════════════════
      TWO-COLUMN BODY
@@ -206,6 +260,28 @@
     {{-- ── RIGHT: Widgets ── --}}
     <div style="display:flex;flex-direction:column;gap:14px;">
 
+        {{-- Weather card --}}
+        @if($weather)
+        <div class="panel" id="weatherCard">
+            <div class="panel-title">
+                <i class="fas fa-cloud-sun" style="color:#0ea5e9;font-size:12px;"></i>
+                Port Weather
+                <span style="margin-left:auto;font-size:10px;color:#94a3b8;font-weight:400;">Chittagong</span>
+            </div>
+            <div id="weatherBody">
+                @include('partials.weather-body', ['weather' => $weather, 'forecastRisk' => $forecastRisk])
+            </div>
+        </div>
+        @elseif(!config('services.openweather.key'))
+        <div class="panel" style="border-color:#fde68a;">
+            <div class="panel-title" style="color:#92400e;">
+                <i class="fas fa-cloud" style="color:#f59e0b;font-size:12px;"></i>
+                Weather
+            </div>
+            <p style="font-size:12px;color:#94a3b8;">Set <code>OPENWEATHER_API_KEY</code> in <code>.env</code> to enable.</p>
+        </div>
+        @endif
+
         {{-- Low Stock list --}}
         <div class="panel">
             <div class="panel-title">
@@ -270,5 +346,54 @@
     </div>
 
 </div>
+
+@push('scripts')
+<script>
+function refreshWeather() {
+    var spinner = document.getElementById('wxSpinner');
+    if (spinner) spinner.classList.add('fa-spin');
+
+    fetch('{{ route("dashboard.weather-json") }}')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.error) return;
+
+            var c  = data.current;
+            var fr = data.forecast_risk;
+
+            // Rebuild weather body
+            var iconMap = {
+                'Clear': ['fas fa-sun','#f59e0b'], 'Clouds': ['fas fa-cloud','#94a3b8'],
+                'Rain':  ['fas fa-cloud-rain','#3b82f6'], 'Drizzle': ['fas fa-cloud-rain','#60a5fa'],
+                'Thunderstorm': ['fas fa-bolt','#a855f7'], 'Snow': ['fas fa-snowflake','#93c5fd'],
+                'Mist': ['fas fa-smog','#94a3b8'], 'Haze': ['fas fa-smog','#94a3b8'],
+            };
+            var ic = iconMap[c.main] || ['fas fa-cloud','#94a3b8'];
+
+            var riskBadge = fr.outdoor_risk
+                ? '<div style="margin-top:10px;padding:7px 10px;background:#fffbeb;border:1px solid #fcd34d;border-radius:7px;font-size:11px;font-weight:600;color:#92400e;display:flex;align-items:center;gap:6px;"><i class=\"fas fa-exclamation-triangle\" style=\"color:#f59e0b;\"></i>' + fr.risk_reason + ' from ' + fr.earliest_risk + '</div>'
+                : '';
+
+            document.getElementById('weatherBody').innerHTML =
+                '<div class="wx-row">'
+                + '<i class="' + ic[0] + '" style="font-size:30px;color:' + ic[1] + ';flex-shrink:0;"></i>'
+                + '<div>'
+                + '<div style="display:flex;align-items:baseline;gap:2px;"><span class="wx-temp">' + c.temp + '</span><span class="wx-deg">°C</span></div>'
+                + '<div class="wx-cond">' + c.condition + '</div>'
+                + '</div></div>'
+                + '<div class="wx-meta">'
+                + '<div class="wx-meta-item"><i class="fas fa-tint" style="color:#3b82f6;width:13px;"></i><span>Humidity ' + c.humidity + '%</span></div>'
+                + '<div class="wx-meta-item"><i class="fas fa-wind" style="color:#64748b;width:13px;"></i><span>Wind ' + c.wind_speed + ' m/s</span></div>'
+                + '<div class="wx-meta-item"><i class="fas fa-thermometer-half" style="color:#f59e0b;width:13px;"></i><span>Feels like ' + c.feels_like + '°C</span></div>'
+                + '</div>'
+                + riskBadge
+                + '<button class="wx-refresh" onclick="refreshWeather()"><i class="fas fa-sync-alt" id="wxSpinner"></i> Refresh &middot; ' + c.fetched_at + '</button>';
+        })
+        .catch(function() {
+            if (spinner) spinner.classList.remove('fa-spin');
+        });
+}
+</script>
+@endpush
 
 @endsection

@@ -190,6 +190,17 @@
                     <option value="done"        {{ old('status', $order->status) === 'done'        ? 'selected' : '' }}>Done</option>
                 </select>
             </div>
+            <div class="ed-field" style="margin-top:4px;">
+                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                    <input type="checkbox" name="is_outdoor_sensitive" value="1"
+                           {{ old('is_outdoor_sensitive', $order->is_outdoor_sensitive) ? 'checked' : '' }}
+                           style="width:15px;height:15px;accent-color:#f59e0b;cursor:pointer;flex-shrink:0;">
+                    <span>
+                        <span style="font-size:12px;font-weight:700;color:#0f172a;">Outdoor-sensitive job</span>
+                        <span style="font-size:11px;color:#94a3b8;display:block;margin-top:1px;">Flag if bad weather (rain, high wind) affects this work</span>
+                    </span>
+                </label>
+            </div>
         </div>
     </div>
 
