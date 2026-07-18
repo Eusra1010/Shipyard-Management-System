@@ -224,6 +224,10 @@ class WorkOrderController extends Controller
             ['status' => $request->status, 'id' => $id]
         );
 
+        if ($request->input('from') === 'supervisor') {
+            return redirect()->route('dashboard')->with('success', 'Work order status updated.');
+        }
+
         return redirect()->route('work-orders.show', $id)->with('success', 'Status updated.');
     }
 

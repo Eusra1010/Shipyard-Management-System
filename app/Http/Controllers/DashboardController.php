@@ -3,10 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\SupervisorController;
 
 class DashboardController extends Controller
 {
     public function index()
+    {
+        $user = auth()->user();
+
+        if ($user->role === 'supervisor') {
+            return app(SupervisorController::class)->dashboard();
+        }
+
+        if ($user->role === 'admin') {
+            return $this->adminDashboard();
+        }
+
+        // Any other role — prompt them to contact admin
+        return view('errors.no-access');
+    }
+
+    private function adminDashboard()
     {
         try {
             $activeShips    = DB::selectOne("SELECT COUNT(*) AS cnt FROM ships WHERE status = 'in_repair'")->cnt;
@@ -46,17 +63,9 @@ class DashboardController extends Controller
             ")->cnt;
 
         } catch (\Exception $e) {
-            $activeShips       = 0;
-            $totalBerths       = 0;
-            $freeBerths        = 0;
-            $occupiedBerths    = 0;
-            $activeOrders      = 0;
-            $lowStockCount     = 0;
-            $berthGrid         = [];
-            $recentOrders      = [];
-            $lowStockMaterials = [];
-            $totalWorkers      = 0;
-            $assignedWorkers   = 0;
+            $activeShips = $totalBerths = $freeBerths = $occupiedBerths = 0;
+            $activeOrders = $lowStockCount = $totalWorkers = $assignedWorkers = 0;
+            $berthGrid = $recentOrders = $lowStockMaterials = [];
         }
 
         return view('dashboard', compact(

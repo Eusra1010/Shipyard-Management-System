@@ -12,8 +12,10 @@ use App\Http\Controllers\WorkOrderController;
 use App\Http\Controllers\WorkerController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\BerthController;
+use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\NewsController;
 
+// ── Public routes ──────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
 Route::get('/team', fn() => view('team'))->name('team');
@@ -21,9 +23,23 @@ Route::get('/process', fn() => view('process'))->name('process');
 Route::get('/facility', fn() => view('facility'))->name('facility');
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 
+// ── Authenticated (all roles) ───────────────────────────────
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Work order view + status update — supervisors need these from their dashboard
+    Route::get('/work-orders/{id}',           [WorkOrderController::class, 'show'])->name('work-orders.show');
+    Route::patch('/work-orders/{id}/status',  [WorkOrderController::class, 'updateStatus'])->name('work-orders.status');
+});
+
+// ── Supervisor + Admin ──────────────────────────────────────
+Route::middleware(['auth', 'supervisor'])->group(function () {
+    Route::get('/supervisor/crew',    [SupervisorController::class, 'crew'])->name('supervisor.crew');
+    Route::get('/supervisor/profile', [SupervisorController::class, 'profile'])->name('supervisor.profile');
+});
+
+// ── Admin only ──────────────────────────────────────────────
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/ships', [ShipController::class, 'index'])->name('ships.index');
     Route::get('/ships/create', [ShipController::class, 'create'])->name('ships.create');
     Route::post('/ships', [ShipController::class, 'store'])->name('ships.store');
@@ -34,10 +50,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/work-orders', [WorkOrderController::class, 'index'])->name('work-orders.index');
     Route::get('/work-orders/create', [WorkOrderController::class, 'create'])->name('work-orders.create');
     Route::post('/work-orders', [WorkOrderController::class, 'store'])->name('work-orders.store');
-    Route::get('/work-orders/{id}', [WorkOrderController::class, 'show'])->name('work-orders.show');
     Route::get('/work-orders/{id}/edit', [WorkOrderController::class, 'edit'])->name('work-orders.edit');
     Route::patch('/work-orders/{id}', [WorkOrderController::class, 'update'])->name('work-orders.update');
-    Route::patch('/work-orders/{id}/status', [WorkOrderController::class, 'updateStatus'])->name('work-orders.status');
 
     Route::get('/workers', [WorkerController::class, 'index'])->name('workers.index');
     Route::post('/workers', [WorkerController::class, 'store'])->name('workers.store');
@@ -55,9 +69,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/materials/{id}', [MaterialController::class, 'destroy'])->name('materials.destroy');
 });
 
+// ── Admin panel ────────────────────────────────────────��────
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::patch('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update-role');
+    Route::patch('/users/{id}/role',   [UserController::class, 'updateRole'])->name('users.update-role');
+    Route::patch('/users/{id}/worker', [UserController::class, 'linkWorker'])->name('users.link-worker');
+    Route::patch('/users/{id}/team',   [UserController::class, 'linkTeam'])->name('users.link-team');
 
     Route::get('/news', [NewsAdminController::class, 'index'])->name('news.index');
     Route::get('/news/create', [NewsAdminController::class, 'create'])->name('news.create');
