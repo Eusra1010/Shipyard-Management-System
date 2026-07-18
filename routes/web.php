@@ -15,6 +15,8 @@ use App\Http\Controllers\BerthController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WeatherController;
+use App\Http\Controllers\ContactController;
 
 // ── Public routes ──────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -23,6 +25,7 @@ Route::get('/team', fn() => view('team'))->name('team');
 Route::get('/process', fn() => view('process'))->name('process');
 Route::get('/facility', fn() => view('facility'))->name('facility');
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
 // ── Authenticated (all roles) ───────────────────────────────
 Route::middleware(['auth'])->group(function () {
@@ -30,6 +33,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/profile',   [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('/dashboard/weather-json', [WeatherController::class, 'getWeatherJson'])->name('dashboard.weather-json');
 
     // Work order view + status update — supervisors need these from their dashboard
     Route::get('/work-orders/{id}',           [WorkOrderController::class, 'show'])->name('work-orders.show');
