@@ -52,6 +52,38 @@
     display:flex; align-items:center; justify-content:center;
     flex-shrink:0;
 }
+.modal-overlay {
+    display:none; position:fixed; inset:0;
+    background:rgba(0,0,0,.45); z-index:999;
+    align-items:center; justify-content:center;
+}
+.modal-overlay.active { display:flex; }
+.modal-box {
+    background:#fff; border-radius:12px;
+    padding:28px 30px; width:100%; max-width:440px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+.modal-title { font-size:16px; font-weight:700; color:#0f172a; margin-bottom:20px;
+               display:flex; align-items:center; gap:8px; }
+.modal-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+.modal-group { display:flex; flex-direction:column; gap:5px; }
+.modal-label { font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.06em; }
+.modal-input {
+    font-size:13px; padding:8px 11px; border:1.5px solid #e2e8f0;
+    border-radius:7px; color:#0f172a; outline:none; font-family:inherit;
+}
+.modal-input:focus { border-color:#2563eb; }
+.modal-footer { display:flex; gap:8px; justify-content:flex-end; margin-top:20px; }
+.modal-cancel {
+    font-size:13px; font-weight:600; padding:8px 18px;
+    border:1.5px solid #e2e8f0; border-radius:7px;
+    background:#fff; color:#64748b; cursor:pointer; font-family:inherit;
+}
+.modal-save {
+    font-size:13px; font-weight:600; padding:8px 20px;
+    background:#2563eb; color:#fff; border:none; border-radius:7px;
+    cursor:pointer; font-family:inherit;
+}
 </style>
 @endpush
 
@@ -69,7 +101,13 @@
             <i class="fas fa-users-cog" style="color:#6366f1;font-size:12px;"></i>
             All Users
         </div>
-        <span style="font-size:11px;color:#94a3b8;">{{ count($users) }} accounts</span>
+        <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:11px;color:#94a3b8;">{{ count($users) }} accounts</span>
+            <button onclick="document.getElementById('createUserModal').classList.add('active')"
+                    class="usr-btn" style="display:flex;align-items:center;gap:6px;">
+                <i class="fas fa-plus" style="font-size:10px;"></i> New user
+            </button>
+        </div>
     </div>
 
     <div style="overflow-x:auto;">
@@ -176,5 +214,70 @@
         </table>
     </div>
 </div>
+
+{{-- Create user modal --}}
+<div class="modal-overlay" id="createUserModal">
+    <div class="modal-box">
+        <div class="modal-title">
+            <i class="fas fa-user-plus" style="color:#2563eb;font-size:14px;"></i>
+            Create new account
+        </div>
+
+        @if($errors->any())
+        <div style="padding:10px 13px;background:#fef2f2;border:1px solid #fecaca;border-radius:7px;
+                    font-size:12px;color:#991b1b;margin-bottom:14px;">
+            {{ $errors->first() }}
+        </div>
+        @endif
+
+        <form method="POST" action="{{ route('admin.users.store') }}">
+            @csrf
+            <div class="modal-row">
+                <div class="modal-group" style="grid-column:1/-1;">
+                    <label class="modal-label">Full name</label>
+                    <input type="text" name="name" class="modal-input"
+                           value="{{ old('name') }}" placeholder="e.g. Ahmad Karim" required>
+                </div>
+            </div>
+            <div class="modal-group" style="margin-bottom:12px;">
+                <label class="modal-label">Email address</label>
+                <input type="email" name="email" class="modal-input"
+                       value="{{ old('email') }}" placeholder="ahmad@navalforge.com" required>
+            </div>
+            <div class="modal-row">
+                <div class="modal-group">
+                    <label class="modal-label">Password</label>
+                    <input type="password" name="password" class="modal-input"
+                           placeholder="Min. 8 characters" required>
+                </div>
+                <div class="modal-group">
+                    <label class="modal-label">Role</label>
+                    <select name="role" class="modal-input">
+                        <option value="supervisor" @selected(old('role') === 'supervisor')>Supervisor</option>
+                        <option value="admin"      @selected(old('role') === 'admin')>Admin</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-group">
+                <label class="modal-label">Team <span style="font-weight:400;text-transform:none;color:#94a3b8;">(optional)</span></label>
+                <input type="text" name="team" class="modal-input"
+                       value="{{ old('team') }}" placeholder="e.g. Welding, Painting">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="modal-cancel"
+                        onclick="document.getElementById('createUserModal').classList.remove('active')">
+                    Cancel
+                </button>
+                <button type="submit" class="modal-save">Create account</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if($errors->any())
+<script>
+    document.getElementById('createUserModal').classList.add('active');
+</script>
+@endif
 
 @endsection

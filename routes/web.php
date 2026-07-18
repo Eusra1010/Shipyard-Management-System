@@ -75,7 +75,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 // ── Admin panel ────────────────────────────────────────��────
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users',  [UserController::class, 'index'])->name('users.index');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
     Route::patch('/users/{id}/role',   [UserController::class, 'updateRole'])->name('users.update-role');
     Route::patch('/users/{id}/worker', [UserController::class, 'linkWorker'])->name('users.link-worker');
     Route::patch('/users/{id}/team',   [UserController::class, 'linkTeam'])->name('users.link-team');

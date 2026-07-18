@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -14,6 +16,34 @@ class UserController extends Controller
         $workers = DB::select("SELECT worker_id, name, role FROM workers ORDER BY name");
 
         return view('admin.users.index', compact('users', 'workers'));
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', Password::min(8)],
+            'role'     => ['required', 'in:supervisor,admin'],
+            'team'     => ['nullable', 'string', 'max:50'],
+        ]);
+
+        $newId = DB::selectOne("SELECT NVL(MAX(id), 0) + 1 AS next_id FROM users")->next_id;
+
+        DB::insert(
+            "INSERT INTO users (id, name, email, password, role, team, created_at, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, SYSDATE, SYSDATE)",
+            [
+                $newId,
+                $data['name'],
+                $data['email'],
+                Hash::make($data['password']),
+                $data['role'],
+                $data['team'] ?: null,
+            ]
+        );
+
+        return back()->with('status', "Account created for {$data['name']}.");
     }
 
     public function updateRole(Request $request, $id)
