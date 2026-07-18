@@ -100,6 +100,9 @@
         <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
             <i class="fas fa-users-cog"></i> Manage Users
         </a>
+        <a href="{{ route('admin.messages.index') }}" class="{{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">
+            <i class="fas fa-inbox"></i> Inbox
+        </a>
     </nav>
 
     <div class="adm-user">
