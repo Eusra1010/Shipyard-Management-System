@@ -93,7 +93,6 @@
             <i class="fas fa-boxes"></i> Materials
         </a>
 
-        @if(Auth::user()->role === 'admin')
         <span class="nav-section">Admin</span>
         <a href="{{ route('admin.news.index') }}" class="{{ request()->routeIs('admin.news.*') ? 'active' : '' }}">
             <i class="fas fa-newspaper"></i> News
@@ -101,7 +100,6 @@
         <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
             <i class="fas fa-users-cog"></i> Manage Users
         </a>
-        @endif
     </nav>
 
     <div class="adm-user">
