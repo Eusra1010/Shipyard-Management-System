@@ -14,6 +14,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\BerthController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ProfileController;
 
 // ── Public routes ──────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -26,6 +27,9 @@ Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 // ── Authenticated (all roles) ───────────────────────────────
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/profile',   [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     // Work order view + status update — supervisors need these from their dashboard
     Route::get('/work-orders/{id}',           [WorkOrderController::class, 'show'])->name('work-orders.show');

@@ -1,4 +1,8 @@
-<x-app-layout>
+@extends('layouts.admin')
+@section('title', 'Edit Ship')
+@section('page-title', 'Edit Ship')
+@section('breadcrumb', 'NavalForge / Ships / Edit')
+@section('content')
 
 <div style="margin-bottom:1.5rem;">
     <a href="{{ route('ships.index') }}"
@@ -131,4 +135,4 @@ document.querySelectorAll('.status-radio').forEach(radio => {
 });
 </script>
 
-</x-app-layout>
+@endsection

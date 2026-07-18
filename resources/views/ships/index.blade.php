@@ -1,4 +1,8 @@
-<x-app-layout>
+@extends('layouts.admin')
+@section('title', 'Ships')
+@section('page-title', 'Ships')
+@section('breadcrumb', 'NavalForge / Ships')
+@section('content')
 
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
     <div>
@@ -111,4 +115,4 @@
     </table>
 </div>
 
-</x-app-layout>
+@endsection
