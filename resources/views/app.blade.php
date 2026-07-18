@@ -53,7 +53,6 @@
     <div style="margin-left:auto;display:flex;gap:8px;">
         @guest
             <a href="{{ route('login') }}" style="font-size:12px;font-weight:600;padding:7px 18px;border:1.5px solid #334155;border-radius:6px;color:#94a3b8;">Sign in</a>
-            <a href="{{ route('register') }}" style="font-size:12px;font-weight:600;padding:7px 18px;background:#1d4ed8;color:#fff;border-radius:6px;">Register</a>
         @endguest
         @auth
             <a href="{{ route('dashboard') }}" style="font-size:12px;font-weight:600;padding:7px 18px;background:#1d4ed8;color:#fff;border-radius:6px;">

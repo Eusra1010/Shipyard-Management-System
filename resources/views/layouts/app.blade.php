@@ -22,7 +22,6 @@
     <div style="display:flex;gap:8px;align-items:center;">
         @guest
             <a href="{{ route('login') }}" style="font-size:13px;font-weight:600;padding:8px 20px;border:1.5px solid #334155;border-radius:8px;color:#e2e8f0;text-decoration:none;background:transparent;">Sign in</a>
-            <a href="{{ route('register') }}" style="font-size:13px;font-weight:600;padding:8px 20px;background:#2563eb;color:#fff;border-radius:8px;text-decoration:none;border:1.5px solid #1d4ed8;">Register</a>
         @endguest
         @auth
             <a href="{{ route('dashboard') }}" style="font-size:13px;font-weight:600;padding:8px 20px;background:#2563eb;color:#fff;border-radius:8px;text-decoration:none;border:1.5px solid #1d4ed8;">Dashboard</a>
