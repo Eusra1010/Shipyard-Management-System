@@ -47,6 +47,23 @@ class BerthController extends Controller
         return view('berths.index', compact('berths', 'total', 'free', 'availableShips'));
     }
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'berth_name' => ['required', 'string', 'max:50'],
+            'berth_type' => ['required', 'in:Standard,Dry Dock,Floating'],
+        ]);
+
+        $newId = DB::selectOne("SELECT NVL(MAX(berth_id), 0) + 1 AS next_id FROM berths")->next_id;
+
+        DB::insert(
+            "INSERT INTO berths (berth_id, berth_name, berth_type, status) VALUES (?, ?, ?, 'free')",
+            [$newId, $request->berth_name, $request->berth_type]
+        );
+
+        return redirect()->route('berths.index')->with('success', "Berth \"{$request->berth_name}\" added.");
+    }
+
     public function assign(Request $request, $id)
     {
         $request->validate(['ship_id' => 'required|integer']);

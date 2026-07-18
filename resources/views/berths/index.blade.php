@@ -188,13 +188,19 @@
 @endif
 
 {{-- ── Header ── --}}
-<div class="bth-header">
-    <div class="bth-title">Berths</div>
-    <div class="bth-summary">
-        <strong>{{ $total }} total</strong> &nbsp;·&nbsp;
-        {{ $total - $free }} occupied &nbsp;·&nbsp;
-        <strong>{{ $free }} free</strong>
+<div class="bth-header" style="display:flex;align-items:flex-start;justify-content:space-between;">
+    <div>
+        <div class="bth-title">Berths</div>
+        <div class="bth-summary">
+            <strong>{{ $total }} total</strong> &nbsp;·&nbsp;
+            {{ $total - $free }} occupied &nbsp;·&nbsp;
+            <strong>{{ $free }} free</strong>
+        </div>
     </div>
+    <button onclick="document.getElementById('addBerthModal').style.display='flex'"
+            style="display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;padding:9px 18px;background:#0f172a;color:#fff;border:none;border-radius:8px;cursor:pointer;">
+        <i class="fas fa-plus"></i> Add berth
+    </button>
 </div>
 
 {{-- ── Berth grid ── --}}
@@ -367,5 +373,42 @@ var ROUTES = {
     }
 }());
 </script>
+
+{{-- Add Berth Modal --}}
+<div id="addBerthModal"
+     style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:12px;padding:28px;width:360px;max-width:90%;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <div style="font-size:16px;font-weight:700;color:#0f172a;">Add new berth</div>
+            <button onclick="document.getElementById('addBerthModal').style.display='none'"
+                    style="background:none;border:none;font-size:20px;color:#94a3b8;cursor:pointer;">&times;</button>
+        </div>
+        <form method="POST" action="{{ route('berths.store') }}">
+            @csrf
+            <div style="margin-bottom:14px;">
+                <label style="display:block;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;">Berth name</label>
+                <input type="text" name="berth_name" required placeholder="e.g. Berth 9"
+                       value="{{ old('berth_name') }}"
+                       style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box;">
+            </div>
+            <div style="margin-bottom:20px;">
+                <label style="display:block;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;">Type</label>
+                <select name="berth_type" required
+                        style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;background:#fff;outline:none;">
+                    <option value="Standard">Standard</option>
+                    <option value="Dry Dock">Dry Dock</option>
+                    <option value="Floating">Floating</option>
+                </select>
+            </div>
+            <button type="submit"
+                    style="width:100%;padding:10px;background:#0f172a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">
+                Add berth
+            </button>
+        </form>
+    </div>
+</div>
+@if($errors->any())
+<script>document.getElementById('addBerthModal').style.display='flex';</script>
+@endif
 
 @endsection
