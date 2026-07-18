@@ -400,12 +400,11 @@
             <div style="font-size:11px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Our location</div>
             <h3 style="font-size:18px;font-weight:700;color:#0f172a;margin-bottom:1rem;">Dock 12, Chittagong Port</h3>
 
-            {{-- Map placeholder — replace this div with a real Google Maps embed iframe --}}
-            <div style="width:100%;height:200px;background:linear-gradient(135deg,#e0f2fe,#bae6fd);border-radius:12px;border:1px solid #bae6fd;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;margin-bottom:1.2rem;">
-                <i class="fas fa-map-marked-alt" style="font-size:32px;color:#0284c7;opacity:.7;"></i>
-                <span style="font-size:12px;color:#0369a1;font-weight:600;">Replace with Google Maps embed</span>
-                <span style="font-size:11px;color:#64748b;">Dock 12, Port Industrial Zone, Chittagong</span>
-            </div>
+            <iframe
+                src="https://maps.google.com/maps?q=Chittagong+Port+Industrial+Zone,+Chittagong,+Bangladesh&t=k&z=15&ie=UTF8&iwloc=&output=embed"
+                width="100%" height="200" style="border:0;border-radius:12px;display:block;margin-bottom:1.2rem;"
+                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
 
             <div style="display:flex;flex-direction:column;gap:10px;">
                 <div style="display:flex;gap:12px;align-items:center;">
@@ -432,50 +431,21 @@
 </section>
 
 {{-- ════════════════════════════════
-     RECENT ACTIVE JOBS
+     OUR LOCATION
 ════════════════════════════════ --}}
-@if(count($recent) > 0)
 <section style="padding:3rem 2.5rem;background:#f8fafc;border-top:1px solid #e2e8f0;">
     <div style="max-width:960px;margin:0 auto;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.4rem;">
-            <div>
-                <div style="font-size:11px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">Live</div>
-                <h2 style="font-size:20px;font-weight:800;color:#0f172a;">Recent active jobs</h2>
-            </div>
-            <a href="{{ route('projects') }}" style="font-size:13px;font-weight:600;color:#1d4ed8;display:inline-flex;align-items:center;gap:6px;">
-                View all <i class="fas fa-arrow-right"></i>
-            </a>
+        <div style="text-align:center;margin-bottom:1.4rem;">
+            <div style="font-size:11px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">Our location</div>
+            <h2 style="font-size:20px;font-weight:800;color:#0f172a;">Find us at Chittagong Port</h2>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;">
-            @foreach($recent as $job)
-            @php
-                $badge = match($job->status) {
-                    'in_progress' => ['#fef3c7','#92400e'],
-                    'pending'     => ['#eff6ff','#1e40af'],
-                    default       => ['#f1f5f9','#475569'],
-                };
-            @endphp
-            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.1rem;">
-                <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
-                    <div style="font-size:14px;font-weight:600;color:#0f172a;">{{ $job->title }}</div>
-                    <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap;flex-shrink:0;background:{{ $badge[0] }};color:{{ $badge[1] }};">
-                        {{ strtoupper(str_replace('_',' ',$job->status)) }}
-                    </span>
-                </div>
-                <div style="font-size:12px;color:#64748b;display:flex;align-items:center;gap:6px;">
-                    <i class="fas fa-ship" style="color:#3b82f6;"></i> {{ $job->ship_name }}
-                </div>
-                @if($job->berth_name)
-                <div style="font-size:12px;color:#94a3b8;margin-top:4px;display:flex;align-items:center;gap:6px;">
-                    <i class="fas fa-warehouse" style="color:#94a3b8;"></i> {{ $job->berth_name }}
-                </div>
-                @endif
-            </div>
-            @endforeach
-        </div>
+        <iframe
+            src="https://maps.google.com/maps?q=Chittagong+Port+Industrial+Zone,+Chittagong,+Bangladesh&t=k&z=15&ie=UTF8&iwloc=&output=embed"
+            width="100%" height="320" style="border:0;border-radius:12px;display:block;"
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
     </div>
 </section>
-@endif
 
 {{-- ════════════════════════════════
      TRUSTED BY
