@@ -23,6 +23,33 @@ class ShipController extends Controller
         return view('ships.index', compact('ships'));
     }
 
+    public function show($id)
+    {
+        $ship = DB::selectOne("
+            SELECT s.ship_id, s.ship_name, s.ship_type, s.owner_name,
+                   s.tonnage, s.flag_country, s.status,
+                   TO_CHAR(s.arrival_date, 'DD Mon YYYY') AS arrival_date,
+                   NVL(b.berth_name, '—') AS berth_name
+            FROM ships s
+            LEFT JOIN berths b ON b.ship_id = s.ship_id
+            WHERE s.ship_id = :id
+        ", ['id' => $id]);
+
+        if (!$ship) abort(404);
+
+        $workOrders = DB::select("
+            SELECT order_id, title, status, priority,
+                   TO_CHAR(start_date, 'DD Mon YYYY') AS start_date,
+                   TO_CHAR(end_date,   'DD Mon YYYY') AS end_date,
+                   TO_CHAR(created_at, 'DD Mon YYYY') AS created_at
+            FROM work_orders
+            WHERE ship_id = :id
+            ORDER BY created_at DESC
+        ", ['id' => $id]);
+
+        return view('ships.show', compact('ship', 'workOrders'));
+    }
+
     public function create()
     {
         return view('ships.create');

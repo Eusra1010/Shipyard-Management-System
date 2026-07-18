@@ -53,7 +53,7 @@
                             <i class="fas fa-ship" style="font-size:14px;color:#2563eb;"></i>
                         </div>
                         <div>
-                            <div style="font-weight:600;color:#0f172a;">{{ $ship->ship_name }}</div>
+                            <a href="{{ route('ships.show', $ship->ship_id) }}" style="font-weight:600;color:#0f172a;text-decoration:none;">{{ $ship->ship_name }}</a>
                             <div style="font-size:11px;color:#94a3b8;">#{{ $ship->ship_id }}</div>
                         </div>
                     </div>

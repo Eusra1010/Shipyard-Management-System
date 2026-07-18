@@ -8,6 +8,7 @@ use App\Http\Controllers\ShipController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\NewsAdminController;
+use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\WorkOrderController;
 use App\Http\Controllers\WorkerController;
 use App\Http\Controllers\MaterialController;
@@ -52,6 +53,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/ships', [ShipController::class, 'index'])->name('ships.index');
     Route::get('/ships/create', [ShipController::class, 'create'])->name('ships.create');
     Route::post('/ships', [ShipController::class, 'store'])->name('ships.store');
+    Route::get('/ships/{id}', [ShipController::class, 'show'])->name('ships.show');
     Route::get('/ships/{id}/edit', [ShipController::class, 'edit'])->name('ships.edit');
     Route::patch('/ships/{id}', [ShipController::class, 'update'])->name('ships.update');
     Route::delete('/ships/{id}', [ShipController::class, 'destroy'])->name('ships.destroy');
@@ -61,6 +63,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/work-orders', [WorkOrderController::class, 'store'])->name('work-orders.store');
     Route::get('/work-orders/{id}/edit', [WorkOrderController::class, 'edit'])->name('work-orders.edit');
     Route::patch('/work-orders/{id}', [WorkOrderController::class, 'update'])->name('work-orders.update');
+    Route::delete('/work-orders/{id}', [WorkOrderController::class, 'destroy'])->name('work-orders.destroy');
 
     Route::get('/workers', [WorkerController::class, 'index'])->name('workers.index');
     Route::post('/workers', [WorkerController::class, 'store'])->name('workers.store');
@@ -68,6 +71,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/workers/{id}', [WorkerController::class, 'destroy'])->name('workers.destroy');
 
     Route::get('/berths', [BerthController::class, 'index'])->name('berths.index');
+    Route::post('/berths', [BerthController::class, 'store'])->name('berths.store');
     Route::patch('/berths/{id}/assign', [BerthController::class, 'assign'])->name('berths.assign');
     Route::patch('/berths/{id}/release', [BerthController::class, 'release'])->name('berths.release');
 
@@ -92,6 +96,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/news/{id}/edit', [NewsAdminController::class, 'edit'])->name('news.edit');
     Route::patch('/news/{id}', [NewsAdminController::class, 'update'])->name('news.update');
     Route::delete('/news/{id}', [NewsAdminController::class, 'destroy'])->name('news.destroy');
+
+    Route::get('/messages', [ContactMessageController::class, 'index'])->name('messages.index');
+    Route::get('/messages/{id}', [ContactMessageController::class, 'show'])->name('messages.show');
+    Route::delete('/messages/{id}', [ContactMessageController::class, 'destroy'])->name('messages.destroy');
 });
 
 require __DIR__.'/auth.php';
