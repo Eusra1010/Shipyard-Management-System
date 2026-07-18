@@ -211,8 +211,23 @@
 @endsection
 
 @section('content')
+<style>
+.fade-section {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .65s ease, transform .65s ease;
+}
+.fade-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+    .fade-section { opacity: 1; transform: none; transition: none; }
+}
+</style>
+
 {{-- ── What We Offer (directly below carousel) ── --}}
-<section style="padding:3.5rem 2.5rem;background:#f8fafc;border-bottom:1px solid #e2e8f0;">
+<section class="fade-section" style="padding:3.5rem 2.5rem;background:#f8fafc;border-bottom:1px solid #e2e8f0;">
     <div style="max-width:960px;margin:0 auto;">
 
         <div style="text-align:center;margin-bottom:2rem;">
@@ -328,35 +343,35 @@
 </script>
 
 {{-- ════════════════════════════════
-     LIVE STATS BAR
+     LIVE STATS (counter animated)
 ════════════════════════════════ --}}
-<div style="display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-bottom:2px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.05);">
-    <div style="padding:1.4rem;text-align:center;border-right:1px solid #e5e7eb;">
-        <i class="fas fa-ship" style="font-size:20px;color:#1d4ed8;margin-bottom:8px;display:block;"></i>
-        <div style="font-size:28px;font-weight:800;color:#1d4ed8;">{{ $totalShips }}</div>
-        <div style="font-size:11px;color:#9ca3af;margin-top:2px;text-transform:uppercase;letter-spacing:.05em;">Total ships</div>
+<div class="fade-section" style="display:grid;grid-template-columns:repeat(4,1fr);background:#0f172a;border-bottom:2px solid #1e293b;">
+    <div style="padding:1.6rem;text-align:center;border-right:1px solid #1e293b;">
+        <i class="fas fa-ship" style="font-size:20px;color:#3b82f6;margin-bottom:8px;display:block;"></i>
+        <div class="count-up" data-target="{{ $totalShips }}" style="font-size:32px;font-weight:800;color:#f1f5f9;line-height:1;">0</div>
+        <div style="font-size:10px;color:#64748b;margin-top:5px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;">Total ships</div>
     </div>
-    <div style="padding:1.4rem;text-align:center;border-right:1px solid #e5e7eb;">
-        <i class="fas fa-tools" style="font-size:20px;color:#d97706;margin-bottom:8px;display:block;"></i>
-        <div style="font-size:28px;font-weight:800;color:#d97706;">{{ $shipsInRepair }}</div>
-        <div style="font-size:11px;color:#9ca3af;margin-top:2px;text-transform:uppercase;letter-spacing:.05em;">Under repair</div>
+    <div style="padding:1.6rem;text-align:center;border-right:1px solid #1e293b;">
+        <i class="fas fa-tools" style="font-size:20px;color:#f59e0b;margin-bottom:8px;display:block;"></i>
+        <div class="count-up" data-target="{{ $shipsInRepair }}" style="font-size:32px;font-weight:800;color:#f1f5f9;line-height:1;">0</div>
+        <div style="font-size:10px;color:#64748b;margin-top:5px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;">Under repair</div>
     </div>
-    <div style="padding:1.4rem;text-align:center;border-right:1px solid #e5e7eb;">
-        <i class="fas fa-clipboard-list" style="font-size:20px;color:#059669;margin-bottom:8px;display:block;"></i>
-        <div style="font-size:28px;font-weight:800;color:#059669;">{{ $activeJobs }}</div>
-        <div style="font-size:11px;color:#9ca3af;margin-top:2px;text-transform:uppercase;letter-spacing:.05em;">Active jobs</div>
+    <div style="padding:1.6rem;text-align:center;border-right:1px solid #1e293b;">
+        <i class="fas fa-clipboard-list" style="font-size:20px;color:#22c55e;margin-bottom:8px;display:block;"></i>
+        <div class="count-up" data-target="{{ $activeJobs }}" style="font-size:32px;font-weight:800;color:#f1f5f9;line-height:1;">0</div>
+        <div style="font-size:10px;color:#64748b;margin-top:5px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;">Active jobs</div>
     </div>
-    <div style="padding:1.4rem;text-align:center;">
-        <i class="fas fa-warehouse" style="font-size:20px;color:#7c3aed;margin-bottom:8px;display:block;"></i>
-        <div style="font-size:28px;font-weight:800;color:#7c3aed;">{{ $freeBerths }}</div>
-        <div style="font-size:11px;color:#9ca3af;margin-top:2px;text-transform:uppercase;letter-spacing:.05em;">Free berths</div>
+    <div style="padding:1.6rem;text-align:center;">
+        <i class="fas fa-warehouse" style="font-size:20px;color:#a78bfa;margin-bottom:8px;display:block;"></i>
+        <div class="count-up" data-target="{{ $freeBerths }}" style="font-size:32px;font-weight:800;color:#f1f5f9;line-height:1;">0</div>
+        <div style="font-size:10px;color:#64748b;margin-top:5px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;">Free berths</div>
     </div>
 </div>
 
 {{-- ════════════════════════════════
      ABOUT US
 ════════════════════════════════ --}}
-<section id="about" style="padding:4rem 2.5rem;background:#fff;">
+<section id="about" class="fade-section" style="padding:4rem 2.5rem;background:#fff;">
     <div style="max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;">
 
         <div>
@@ -433,7 +448,7 @@
 {{-- ════════════════════════════════
      OUR LOCATION
 ════════════════════════════════ --}}
-<section style="padding:3rem 2.5rem;background:#f8fafc;border-top:1px solid #e2e8f0;">
+<section class="fade-section" style="padding:3rem 2.5rem;background:#f8fafc;border-top:1px solid #e2e8f0;">
     <div style="max-width:960px;margin:0 auto;">
         <div style="text-align:center;margin-bottom:1.4rem;">
             <div style="font-size:11px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">Our location</div>
@@ -450,7 +465,7 @@
 {{-- ════════════════════════════════
      TRUSTED BY
 ════════════════════════════════ --}}
-<section style="padding:3.5rem 2.5rem;background:#fff;border-top:1px solid #e2e8f0;">
+<section class="fade-section" style="padding:3.5rem 2.5rem;background:#fff;border-top:1px solid #e2e8f0;">
     <div style="max-width:960px;margin:0 auto;text-align:center;">
         <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.12em;margin-bottom:2rem;">
             Trusted by leading maritime operators
@@ -492,9 +507,64 @@
     </div>
 </section>
 
+<script>
+(function () {
+    // ── Scroll fade-in ──────────────────────────────────────
+    var fadeObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                fadeObs.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-section').forEach(function (el) {
+        fadeObs.observe(el);
+    });
+
+    // ── Counter count-up ────────────────────────────────────
+    function animateCount(el) {
+        var target   = parseInt(el.getAttribute('data-target'), 10) || 0;
+        var duration = 1400;
+        var start    = null;
+
+        function ease(t) { return t < .5 ? 2*t*t : -1+(4-2*t)*t; }
+
+        function step(ts) {
+            if (!start) start = ts;
+            var progress = Math.min((ts - start) / duration, 1);
+            el.textContent = Math.round(ease(progress) * target);
+            if (progress < 1) requestAnimationFrame(step);
+            else el.textContent = target;
+        }
+        requestAnimationFrame(step);
+    }
+
+    var countObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+            if (e.isIntersecting) {
+                e.target.querySelectorAll('.count-up').forEach(animateCount);
+                countObs.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.fade-section').forEach(function (el) {
+        if (el.querySelector('.count-up')) countObs.observe(el);
+    });
+}());
+</script>
+
 @endsection
 
 @section('footer')
+@if(session('contact_success'))
+<div style="background:#f0fdf4;border:1px solid #86efac;padding:14px 2.5rem;display:flex;align-items:center;gap:12px;">
+    <i class="fas fa-check-circle" style="color:#16a34a;font-size:18px;flex-shrink:0;"></i>
+    <span style="font-size:14px;color:#166534;font-weight:500;">Your message has been sent. We'll get back to you within 24 hours.</span>
+</div>
+@endif
 <footer id="contact" style="background:#1e2637;color:#94a3b8;padding:4rem 2.5rem 1.5rem;border-top:3px solid #1d4ed8;">
     <div style="max-width:960px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem;">
 
@@ -502,7 +572,7 @@
         <div>
             <div style="font-size:11px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;">Contact us</div>
             <p style="font-size:13px;color:#64748b;margin-bottom:1.2rem;line-height:1.7;">Have a vessel that needs repairs? Send us a message and our team will get back to you within 24 hours.</p>
-            <form method="POST" action="#" style="display:flex;flex-direction:column;gap:10px;">
+            <form method="POST" action="{{ route('contact.send') }}" style="display:flex;flex-direction:column;gap:10px;">
                 @csrf
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
                     <input type="text" name="name" placeholder="Your name"
